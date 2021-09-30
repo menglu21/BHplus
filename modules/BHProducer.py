@@ -84,6 +84,12 @@ class BHProducer(Module):
     self.out.branch("bh_mlj2j3", "F")
     self.out.branch("bh_mlj2j4", "F")
     self.out.branch("bh_mlj3j4", "F")
+    self.out.branch("bh_mlb1", "F")
+    self.out.branch("bh_mlb2", "F")
+    self.out.branch("bh_mlb3", "F")
+    self.out.branch("bh_mlb1b2", "F")
+    self.out.branch("bh_mlb1b3", "F")
+    self.out.branch("bh_mlb2b3", "F")
     self.out.branch("WZ_region", "I")
     self.out.branch("WZ_zl1_id", "I")
     self.out.branch("WZ_zl2_id", "I")
@@ -511,6 +517,12 @@ class BHProducer(Module):
     bh_mlj2j3=-99
     bh_mlj2j4=-99
     bh_mlj3j4=-99
+    bh_mlb1=-99
+    bh_mlb2=-99
+    bh_mlb3=-99
+    bh_mlb1b2=-99
+    bh_mlb1b3=-99
+    bh_mlb2b3=-99
     
     # 2th lepton veto
     if len(tightLeptons)==1 and len(looseLeptons)==0:
@@ -551,6 +563,9 @@ class BHProducer(Module):
       j2_v4_temp=TLorentzVector()
       j3_v4_temp=TLorentzVector()
       j4_v4_temp=TLorentzVector()
+      b1_v4_temp=TLorentzVector()
+      b2_v4_temp=TLorentzVector()
+      b3_v4_temp=TLorentzVector()
       if n_tight_jet_in24>3:
 	j1_v4_temp.SetPtEtaPhiM(j1_pt,j1_eta,j1_phi,j1_mass)
 	j2_v4_temp.SetPtEtaPhiM(j2_pt,j2_eta,j2_phi,j2_mass)
@@ -596,6 +611,26 @@ class BHProducer(Module):
         bh_dr_l1j1=l1_v4_temp.DeltaR(j1_v4_temp)
         bh_mlj1=(l1_v4_temp+j1_v4_temp).M()
 
+      if n_bjet_DeepB>2:
+	b1_v4_temp.SetPtEtaPhiM(DeepB_j1_pt, DeepB_j1_eta,DeepB_j1_phi,DeepB_j1_mass)
+	b2_v4_temp.SetPtEtaPhiM(DeepB_j2_pt, DeepB_j2_eta,DeepB_j2_phi,DeepB_j2_mass)
+	b3_v4_temp.SetPtEtaPhiM(DeepB_j3_pt, DeepB_j3_eta,DeepB_j3_phi,DeepB_j3_mass)
+	bh_mlb1=(l1_v4_temp+b1_v4_temp).M()
+	bh_mlb2=(l1_v4_temp+b2_v4_temp).M()
+	bh_mlb3=(l1_v4_temp+b3_v4_temp).M()
+	bh_mlb1b2=(l1_v4_temp+b1_v4_temp+b2_v4_temp).M()
+	bh_mlb1b3=(l1_v4_temp+b1_v4_temp+b3_v4_temp).M()
+	bh_mlb2b3=(l1_v4_temp+b2_v4_temp+b3_v4_temp).M()
+      if n_bjet_DeepB==2:
+	b1_v4_temp.SetPtEtaPhiM(DeepB_j1_pt, DeepB_j1_eta,DeepB_j1_phi,DeepB_j1_mass)
+	b2_v4_temp.SetPtEtaPhiM(DeepB_j2_pt, DeepB_j2_eta,DeepB_j2_phi,DeepB_j2_mass)
+	bh_mlb1=(l1_v4_temp+b1_v4_temp).M()
+	bh_mlb2=(l1_v4_temp+b2_v4_temp).M()
+	bh_mlb1b2=(l1_v4_temp+b1_v4_temp+b2_v4_temp).M()
+      if n_bjet_DeepB==1:
+	b1_v4_temp.SetPtEtaPhiM(DeepB_j1_pt, DeepB_j1_eta,DeepB_j1_phi,DeepB_j1_mass)
+	bh_mlb1=(l1_v4_temp+b1_v4_temp).M()
+
     self.out.fillBranch("bh_nl", bh_nl)
     self.out.fillBranch("bh_jets", bh_jets)
     self.out.fillBranch("bh_region", bh_region)
@@ -621,6 +656,12 @@ class BHProducer(Module):
     self.out.fillBranch("bh_mlj2j3", bh_mlj2j3)
     self.out.fillBranch("bh_mlj2j4", bh_mlj2j4)
     self.out.fillBranch("bh_mlj3j4", bh_mlj3j4)
+    self.out.fillBranch("bh_mlb1", bh_mlb1)
+    self.out.fillBranch("bh_mlb2", bh_mlb2)
+    self.out.fillBranch("bh_mlb3", bh_mlb3)
+    self.out.fillBranch("bh_mlb1b2", bh_mlb1b2)
+    self.out.fillBranch("bh_mlb1b3", bh_mlb1b3)
+    self.out.fillBranch("bh_mlb2b3", bh_mlb2b3)
 
     ###################
     # WZ region
