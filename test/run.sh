@@ -22,7 +22,8 @@ fi
 case ${WHAT} in
 
   LOCAL)
-	python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test/run.py -m -i $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test/DY.root --year ${YEAR} -o $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test;
+	#python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test/run.py -m -i $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test/DY.root --year ${YEAR} -o $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/analysis/test;
+	python $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/BHplus/test/run.py -d -i $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/BHplus/test/Run2017B_SingleMuon_NanoAODv2.root --year ${YEAR} -o $CMSSW_BASE/src/PhysicsTools/NanoAODTools/python/postprocessing/BHplus/test;
 	;;
 
 #  SUBMIT)

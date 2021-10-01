@@ -35,7 +35,7 @@ def prepare_crab(name,sample_type,year,era,outLFNDirBase):
         f.write('config.JobType.pluginName = "Analysis"\n')
         f.write('config.JobType.psetName = "PSet.py"\n')
         f.write('config.JobType.scriptExe = "./go_crab.sh" \n')
-        f.write('config.JobType.inputFiles = ["./haddnano.py","./BH_postproc.py","./keep_and_drop.txt"] #hadd nano will not be needed once nano tools are in cmssw \n')
+        f.write('config.JobType.inputFiles = ["./haddnano.py","./TTC_postproc.py","./keep_and_drop.txt"] #hadd nano will not be needed once nano tools are in cmssw \n')
         f.write('config.JobType.scriptArgs = ["isdata=' + sample_type + '","year=' + year + '","era=' + era + '"] \n')
         f.write('config.JobType.sendPythonFolder  = True\n')
         f.write('config.JobType.allowUndistributedCMSSW = True \n')
@@ -65,7 +65,7 @@ def prepare_crab(name,sample_type,year,era,outLFNDirBase):
             f.write('config.Data.lumiMask = "Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt" \n\n')
 
 
-        f.write(f'config.Data.outLFNDirBase ="{outLFNDirBase}' + sample_type + '/' + year + '"\n')
+        f.write('config.Data.outLFNDirBase ="{outLFNDirBase}' + sample_type + '/' + year + '"\n')
         f.write('config.Data.publication = False\n')
         f.write('config.Data.ignoreLocality = True\n')
         f.write('config.Data.allowNonValidInputDataset = True\n')
@@ -80,11 +80,11 @@ def submit(name,sample_type,year):
 
     abbre_name = get_abbre(name,sample_type,year)
 
-    if not os.path.exists(f'crabcode_{year}/{abbre_name}_cfg.py'):
+    if not os.path.exists('crabcode_{year}/{abbre_name}_cfg.py'):
         print ("crabcode for ",abbre_name," not existed, \033[31mskipping\033[0m")
         return True
 
-    r=subprocess.run(args=f"crab submit -c crabcode_{year}/{abbre_name}_cfg.py",shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    r=subprocess.run(args="crab submit -c crabcode_{year}/{abbre_name}_cfg.py",shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     if 'Success' in r.stdout:
         print ("--------> submit info:","submit crab jobs for",abbre_name)
     else:
@@ -94,26 +94,26 @@ def kill(name,sample_type,year):
 
     abbre_name = get_abbre(name,sample_type,year)
 
-    if not os.path.exists(f'crab{year}/crab_{abbre_name}'):
+    if not os.path.exists('crab{year}/crab_{abbre_name}'):
         print ("crab log for ",abbre_name," not existed, \033[31mskipping\033[0m \n")
         return True
 
-    r=subprocess.run(args=f"crab kill -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    r=subprocess.run(args="crab kill -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     print (r.stdout,'\n')
 
-    shutil.rmtree(f'crab{year}/crab_{abbre_name}')
-    print (f'crab{year}/crab_{abbre_name} has been removed')
+    shutil.rmtree('crab{year}/crab_{abbre_name}')
+    print ('crab{year}/crab_{abbre_name} has been removed')
 
 
 def status(name,sample_type,year):
 
     abbre_name = get_abbre(name,sample_type,year)
 
-    if not os.path.exists(f'crab{year}/crab_{abbre_name}'):
+    if not os.path.exists('crab{year}/crab_{abbre_name}'):
         print ("crab log for ",abbre_name," not existed, \033[31mskipping\033[0m \n")
         return True
 
-    r=subprocess.run(args=f"crab status -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    r=subprocess.run(args="crab status -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     print (r.stdout,'\n')
 
 
@@ -122,60 +122,60 @@ def hadd_help(name,sample_type,year,store_path):
     abbre_name = get_abbre(name,sample_type,year)
     first_name = name.split('/')[1]
 
-    if os.path.exists(f'{abbre_name}.root'):
-        print (f'{abbre_name} already existed, \033[31mskipping\033[0m')
+    if os.path.exists('{abbre_name}.root'):
+        print ('{abbre_name} already existed, \033[31mskipping\033[0m')
         return True
 
-    if not (os.path.exists(f'{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')):
-        print (f'results for {abbre_name} not existed in {store_path}/{sample_type}/{year}/{first_name}/{abbre_name}, \033[31mskipping\033[0m\n')
+    if not (os.path.exists('{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')):
+        print ('results for {abbre_name} not existed in {store_path}/{sample_type}/{year}/{first_name}/{abbre_name}, \033[31mskipping\033[0m\n')
         return True
     
-    if not (len(os.listdir(f'{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')) == 1 ):
-        print (f'more than 1 result for {abbre_name}, Please check {store_path}/{sample_type}/{year}/{first_name}/{abbre_name}\n')
+    if not (len(os.listdir('{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')) == 1 ):
+        print('more than 1 result for {abbre_name}, Please check {store_path}/{sample_type}/{year}/{first_name}/{abbre_name}\n')
         return True
 
-    run_number = os.listdir(f'{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')[0]
-    path = f'{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}/{run_number}/0000/'
-    print (f'hadding root files in {path}')
-    r=subprocess.run(args=f"haddnano.py {abbre_name}.root {path}/*.root ", shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    run_number = os.listdir('{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}')[0]
+    path = '{store_path}/{sample_type}/{year}/{first_name}/{abbre_name}/{run_number}/0000/'
+    print ('hadding root files in {path}')
+    r=subprocess.run(args="haddnano.py {abbre_name}.root {path}/*.root ", shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     
-    if os.path.exists(f'{abbre_name}.root'):
-        print (f'hadd \033[32mcomplete\033[0m, please check {abbre_name}.root\n')
+    if os.path.exists('{abbre_name}.root'):
+        print ('hadd \033[32mcomplete\033[0m, please check {abbre_name}.root\n')
     else:
-        print (f'hadd \033[31m fail \033[0m!!')
+        print ('hadd \033[31m fail \033[0m!!')
 
 def report_lumi(name,sample_type,year):
 
     abbre_name = get_abbre(name,sample_type,year)
-    if not os.path.exists(f'crab{year}/crab_{abbre_name}'):
+    if not os.path.exists('crab{year}/crab_{abbre_name}'):
         print ("crab log for ",abbre_name," not existed, \033[31mskipping\033[0m \n")
         return True
 
-    r=subprocess.run(args=f"crab report -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    r=subprocess.run(args="crab report -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     print (r.stdout,'\n')
 
-    if not os.path.exists(f'lumi_{year}'):
-        os.mkdir(f'lumi_{year}')
+    if not os.path.exists('lumi_{year}'):
+        os.mkdir('lumi_{year}')
     
-    shutil.copy(f'crab{year}/crab_{abbre_name}/results/notFinishedLumis.json', f'lumi_{year}/{abbre_name}.json')
+    shutil.copy('crab{year}/crab_{abbre_name}/results/notFinishedLumis.json', 'lumi_{year}/{abbre_name}.json')
 
 def resubmit(name,sample_type,year):
 
     abbre_name = get_abbre(name,sample_type,year)
 
-    if not os.path.exists(f'crab{year}/crab_{abbre_name}'):
+    if not os.path.exists('crab{year}/crab_{abbre_name}'):
         print ("crab log for ",abbre_name," not existed, \033[31mskipping\031[0m \n")
         return True
 
-    print (f"resubmitting {abbre_name}\n")
-    r = subprocess.run(args=f"crab resubmit -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
+    print ("resubmitting {abbre_name}\n")
+    r = subprocess.run(args="crab resubmit -d crab{year}/crab_{abbre_name}" ,shell=True,stdout=subprocess.PIPE,encoding='utf-8')
     print (r.stdout,"\n")
 
 
 if __name__=='__main__':
     
-    store_path = '/eos/user/s/sdeng/BH/test/'
-    outLFNDirBase = '/store/user/sdeng/BH/test/'
+    store_path = '/eos/user/s/sdeng/TTC/test/'
+    outLFNDirBase = '/store/user/sdeng/TTC/test/'
 
     with open(args.file, "r") as f:
         jsons = json.load(f)

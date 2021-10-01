@@ -6,11 +6,11 @@ import re
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.countHistogramsModule import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.eleRECOSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.eleIDSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.muonScaleResProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.muonIDISOSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.BHProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.eleRECOSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.eleIDSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.muonScaleResProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.muonIDISOSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.BHProducer import *
 #from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
