@@ -20,7 +20,7 @@ class BHProducer(Module):
   def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
     self.out = wrappedOutputTree
     self.out.branch("HLT_passEle32WPTight", "I")
-    self.out.branch("LHE_nlepton", "I")
+    self.out.branch("lhe_nlepton", "I")
     self.out.branch("n_tight_muon", "I")
     self.out.branch("n_loose_muon", "I")
     self.out.branch("n_tight_ele", "I")
@@ -163,14 +163,14 @@ class BHProducer(Module):
 
     self.out.fillBranch("HLT_passEle32WPTight",HLT_passEle32WPTight)
 
-    LHE_nlepton=0
+    lhe_nlepton=0
     if self.is_lhe:
       lheparticle = Collection(event, 'LHEPart')
       for ilhe in range(0, event.nLHEPart):
 	if lheparticle[ilhe].status==1 and (abs(lheparticle[ilhe].pdgId)==11 or abs(lheparticle[ilhe].pdgId)==13 or abs(lheparticle[ilhe].pdgId)==15):
-	  LHE_nlepton=LHE_nlepton+1
+	  lhe_nlepton=lhe_nlepton+1
 
-    self.out.fillBranch("LHE_nlepton", LHE_nlepton)
+    self.out.fillBranch("lhe_nlepton", lhe_nlepton)
 
     # total number of ele+muon, currently require at least 1 leptons
     if ((event.nMuon + event.nElectron) < 1): return False
@@ -214,11 +214,10 @@ class BHProducer(Module):
 
     self.out.fillBranch("n_tight_muon", n_tight_muon)
     self.out.fillBranch("n_loose_muon", n_loose_muon)
-    if event.nMuon>0:
-      tightMuons_id.extend(np.zeros(event.nMuon-len(tightMuons_id),int)-1)
-      additional_looseMuons_id.extend(np.zeros(event.nMuon-len(additional_looseMuons_id),int)-1)
-      self.out.fillBranch("tightMuons_id", tightMuons_id)
-      self.out.fillBranch("additional_looseMuons_id", additional_looseMuons_id)
+    tightMuons_id.extend(np.zeros(event.nMuon-len(tightMuons_id),int)-1)
+    additional_looseMuons_id.extend(np.zeros(event.nMuon-len(additional_looseMuons_id),int)-1)
+    self.out.fillBranch("tightMuons_id", tightMuons_id)
+    self.out.fillBranch("additional_looseMuons_id", additional_looseMuons_id)
 
     # electron selection: tight (veto) cut-based ID + impact parameter cut, with pt > 15 GeV
     electrons = Collection(event, 'Electron')
@@ -247,11 +246,10 @@ class BHProducer(Module):
     n_loose_ele = len(additional_vetoElectrons)
     self.out.fillBranch("n_tight_ele", n_tight_ele)
     self.out.fillBranch("n_loose_ele", n_loose_ele)
-    if event.nElectron>0:
-      tightElectrons_id.extend(np.zeros(event.nElectron-len(tightElectrons_id),int)-1)
-      additional_vetoElectrons_id.extend(np.zeros(event.nElectron-len(additional_vetoElectrons_id),int)-1)
-      self.out.fillBranch("tightElectrons_id", tightElectrons_id)
-      self.out.fillBranch("additional_vetoElectrons_id", additional_vetoElectrons_id)
+    tightElectrons_id.extend(np.zeros(event.nElectron-len(tightElectrons_id),int)-1)
+    additional_vetoElectrons_id.extend(np.zeros(event.nElectron-len(additional_vetoElectrons_id),int)-1)
+    self.out.fillBranch("tightElectrons_id", tightElectrons_id)
+    self.out.fillBranch("additional_vetoElectrons_id", additional_vetoElectrons_id)
 
     # tight leptons and additional loose leptons collection
     tightLeptons = tightMuons + tightElectrons

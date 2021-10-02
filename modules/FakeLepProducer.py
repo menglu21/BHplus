@@ -238,13 +238,12 @@ class FakeLepProducer(Module):
     self.out.fillBranch("n_tight_muon", n_tight_muon)
     self.out.fillBranch("n_fakeable_muon", n_fakeable_muon)
     self.out.fillBranch("n_loose_muon", n_loose_muon)
-    if event.nMuon>0:
-      tightMuons_id.extend(np.zeros(event.nMuon-len(tightMuons_id),int)-1)
-      fakeable_Muons_id.extend(np.zeros(event.nMuon-len(fakeable_Muons_id),int)-1)
-      additional_looseMuons_id.extend(np.zeros(event.nMuon-len(additional_looseMuons_id),int)-1)
-      self.out.fillBranch("tightMuons_id", tightMuons_id)
-      self.out.fillBranch("fakeable_Muons_id", fakeable_Muons_id)
-      self.out.fillBranch("additional_looseMuons_id", additional_looseMuons_id)
+    tightMuons_id.extend(np.zeros(event.nMuon-len(tightMuons_id),int)-1)
+    fakeable_Muons_id.extend(np.zeros(event.nMuon-len(fakeable_Muons_id),int)-1)
+    additional_looseMuons_id.extend(np.zeros(event.nMuon-len(additional_looseMuons_id),int)-1)
+    self.out.fillBranch("tightMuons_id", tightMuons_id)
+    self.out.fillBranch("fakeable_Muons_id", fakeable_Muons_id)
+    self.out.fillBranch("additional_looseMuons_id", additional_looseMuons_id)
 
     # electron selection: tight (veto) cut-based ID + impact parameter cut, with pt > 15 GeV
     electrons = Collection(event, 'Electron')
@@ -292,13 +291,12 @@ class FakeLepProducer(Module):
     self.out.fillBranch("n_tight_ele", n_tight_ele)
     self.out.fillBranch("n_fakeable_ele", n_fakeable_ele)
     self.out.fillBranch("n_loose_ele", n_loose_ele)
-    if event.nElectron>0:
-      tightElectrons_id.extend(np.zeros(event.nElectron-len(tightElectrons_id),int)-1)
-      fakeable_Electrons_id.extend(np.zeros(event.nElectron-len(fakeable_Electrons_id),int)-1)
-      additional_vetoElectrons_id.extend(np.zeros(event.nElectron-len(additional_vetoElectrons_id),int)-1)
-      self.out.fillBranch("tightElectrons_id", tightElectrons_id)
-      self.out.fillBranch("fakeable_Electrons_id", fakeable_Electrons_id)
-      self.out.fillBranch("additional_vetoElectrons_id", additional_vetoElectrons_id)
+    tightElectrons_id.extend(np.zeros(event.nElectron-len(tightElectrons_id),int)-1)
+    fakeable_Electrons_id.extend(np.zeros(event.nElectron-len(fakeable_Electrons_id),int)-1)
+    additional_vetoElectrons_id.extend(np.zeros(event.nElectron-len(additional_vetoElectrons_id),int)-1)
+    self.out.fillBranch("tightElectrons_id", tightElectrons_id)
+    self.out.fillBranch("fakeable_Electrons_id", fakeable_Electrons_id)
+    self.out.fillBranch("additional_vetoElectrons_id", additional_vetoElectrons_id)
 
     # tight leptons and additional loose leptons collection
     tightLeptons = tightMuons + tightElectrons
