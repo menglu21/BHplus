@@ -6,12 +6,12 @@ import re
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.countHistogramsModule import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.eleRECOSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.eleIDSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.muonScaleResProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.muonIDISOSFProducer import *
-from PhysicsTools.NanoAODTools.postprocessing.analysis.modules.BHProducer import *
-#from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.eleRECOSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.eleIDSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.muonScaleResProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.muonIDISOSFProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.BHplus.modules.BHProducer import *
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import *
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles, runsAndLumis
@@ -52,7 +52,8 @@ def main():
     if opt.year == "2016g" or opt.year == "2016h":
       p = PostProcessor(".", inputFiles(), modules=[muonScaleRes2016b(),BH2016()], provenance=True,fwkJobReport=True, jsonInput=runsAndLumis())
     if opt.year == "2017":
-      p = PostProcessor(opt.output, [opt.inputs], modules=[muonScaleRes2017(),BH2017()], provenance=True,fwkJobReport=True, jsonInput=runsAndLumis(),maxEntries=10000)
+      #p = PostProcessor(opt.output, [opt.inputs], modules=[muonScaleRes2017(),BH2017()], provenance=True,fwkJobReport=True, jsonInput=runsAndLumis(),maxEntries=10000)
+      p = PostProcessor(opt.output, [opt.inputs], modules=[muonScaleRes2017(), BH2017()], provenance=True,fwkJobReport=True, jsonInput=runsAndLumis(),maxEntries=10000)
     if opt.year == "2018a":
       p = PostProcessor(".", inputFiles(), modules=[muonScaleRes2018(),BH2018()], provenance=True,fwkJobReport=True, jsonInput=runsAndLumis())
     if opt.year == "2018b":

@@ -1,0 +1,7 @@
+crab/*.pyc
+data/*.pyc
+modules/*.pyc
+others/*.pyc
+scripts/*.pyc
+test/*.root 
+text/*.pyc
